@@ -1,6 +1,7 @@
 package com.zrk.service.impl;
 
 import com.zrk.dao.UserMapper;
+import com.zrk.exception.InvalidUserIdException;
 import com.zrk.model.web.ResultStatus;
 import com.zrk.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultStatus getUserInfoById(Long userId) {
+        if(userId == Integer.MAX_VALUE) {
+            throw new InvalidUserIdException();
+        }
         ResultStatus resultStatus = new ResultStatus();
         resultStatus.setData(userMapper.selectByPrimaryKey(userId));
         return resultStatus;
