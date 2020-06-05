@@ -2,8 +2,15 @@
 spring:
     #数据源相关配置
     datasource:
-        driverClassName: com.mysql.jdbc.Driver
+        driverClassName: com.mysql.cj.jdbc.Driver
         permission:
             url: jdbc:mysql://127.0.0.1:3306/permission?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=UTC
         password: root
         username: root
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    com.zrk.dao: debug
