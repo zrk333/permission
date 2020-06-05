@@ -1,0 +1,4 @@
+# cat delete
+spring:
+  profiles:
+    active: dev

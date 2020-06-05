@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zrk.dao.UserInfoDao">
+
+    <resultMap id="BaseResultMap" type="com.zrk.model.UserDO">
+        <id column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        userId,userName
+    </sql>
+
+    <select id="getUserInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from userInfo
+        where userId = #{request.userId}
+    </select>
+
+</mapper>

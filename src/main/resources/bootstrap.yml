@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: permission
+server:
+  port: 15000
