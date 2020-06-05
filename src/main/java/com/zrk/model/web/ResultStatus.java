@@ -33,18 +33,8 @@ public class ResultStatus implements Serializable{
         PARAM_INVALID(51),
         /**服务器错误*/
         ERROR(52),
-        /**已绑定*/
-        BINDED(5),
         /**结果为空*/
-        RESULT_EMPTY(3),
-        /**登陆失败*/
-        LOGIN_ERROR(1),
-        /**用户名或密码错误*/
-        NOT_EXIST(7),
-        /**发送验证码错误*/
-        SEND_SMS_ERROR(31),
-        /**验证码错误*/
-        CODE_ERROR(32)
+        RESULT_EMPTY(3)
         ;
 
         public Integer value;
@@ -80,14 +70,9 @@ public class ResultStatus implements Serializable{
     public static final Map<Integer, String> map = new HashMap<Integer, String>(){
         {
             put(GlobalStatus.SUCCESS.getValue(),"成功");
-            put(GlobalStatus.LOGIN_ERROR.getValue(),"登陆失败");
             put(GlobalStatus.PARAM_INVALID.getValue(),"参数错误");
             put(GlobalStatus.PARAM_INVALID.getValue(),"服务器错误");
             put(GlobalStatus.RESULT_EMPTY.getValue(),"未获取到相关数据");
-            put(GlobalStatus.NOT_EXIST.getValue(),"用户名或密码不正确");
-            put(GlobalStatus.BINDED.getValue(),"已经绑定的别的移动设备，请解除绑定后重试");
-            put(GlobalStatus.SEND_SMS_ERROR.getValue(),"短信发送不成功");
-            put(GlobalStatus.CODE_ERROR.getValue(),"短信验证码过期或者错误");
         }
     };
 
