@@ -4,10 +4,7 @@ import com.zrk.model.web.ResultStatus;
 import com.zrk.request.DepartmentRequest;
 import com.zrk.service.DepartmentService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -17,7 +14,7 @@ import javax.annotation.Resource;
  * @Date: 2020/6/6
  */
 @RestController
-@RequestMapping("user")
+@RequestMapping("department")
 public class DepartmentController {
 
     @Resource
@@ -31,5 +28,10 @@ public class DepartmentController {
     @PostMapping("editDepartment")
     public ResultStatus editDepartment(@RequestBody @Validated DepartmentRequest request){
         return departmentService.editDepartment(request);
+    }
+
+    @GetMapping("deleteDepartment")
+    public ResultStatus deleteDepartment(@RequestParam("id") Long id){
+        return departmentService.deleteDepartment(id);
     }
 }

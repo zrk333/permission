@@ -174,4 +174,11 @@
       WHERE id = #{dept.id}
     </foreach>
   </update>
+
+  <select id="findDepartmentByParentId" resultType="java.lang.Integer">
+    select
+    count(1)
+    from sys_department
+    where parent_id = #{parentId}
+  </select>
 </mapper>

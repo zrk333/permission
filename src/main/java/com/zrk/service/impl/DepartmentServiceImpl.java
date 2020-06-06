@@ -58,6 +58,19 @@ public class DepartmentServiceImpl implements DepartmentService {
         return new ResultStatus();
     }
 
+    @Override
+    public ResultStatus deleteDepartment(Long id) {
+        Department department = departmentMapper.selectByPrimaryKey(id);
+        if(department == null){
+            throw new InvalidParamException("该部门不存在");
+        }
+        if(departmentMapper.findDepartmentByParentId(id) > 0){
+            throw new InvalidParamException("该部门存在子部门，无法删除");
+        }
+        departmentMapper.deleteByPrimaryKey(id);
+        return new ResultStatus();
+    }
+
     /**
      * 事务待测
      * @param departmentOld

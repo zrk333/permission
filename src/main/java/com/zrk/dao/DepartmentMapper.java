@@ -39,4 +39,11 @@ public interface DepartmentMapper {
      * @param departmentList
      */
     void batchUpdateLevel(@Param("list") List<Department> departmentList);
+
+    /**
+     * 根据父id校验是否存在子部门
+     * @param id
+     * @return
+     */
+    Integer findDepartmentByParentId(@Param("id") Long id);
 }

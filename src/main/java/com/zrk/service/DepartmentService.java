@@ -23,4 +23,11 @@ public interface DepartmentService {
      * @return
      */
     ResultStatus editDepartment(DepartmentRequest request);
+
+    /**
+     * 删除部门
+     * @param id
+     * @return
+     */
+    ResultStatus deleteDepartment(Long id);
 }
