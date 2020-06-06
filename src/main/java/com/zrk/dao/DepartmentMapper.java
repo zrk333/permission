@@ -3,6 +3,8 @@ package com.zrk.dao;
 import com.zrk.model.Department;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface DepartmentMapper {
     int deleteByPrimaryKey(@Param("id") Long id);
 
@@ -24,4 +26,17 @@ public interface DepartmentMapper {
      * @return
      */
     Integer findDepartmentByNameAndParentId(@Param("parentId") Long parentId, @Param("name") String name, @Param("id") Long id);
+
+    /**
+     * 获取子层级部门
+     * @param levelPrefix
+     * @return
+     */
+    List<Department> getChildDepartmentByLevel(@Param("levelPrefix") String levelPrefix);
+
+    /**
+     * 批量更新层级
+     * @param departmentList
+     */
+    void batchUpdateLevel(@Param("list") List<Department> departmentList);
 }

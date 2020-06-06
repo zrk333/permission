@@ -144,9 +144,7 @@
       level = #{level,jdbcType=VARCHAR},
       seq = #{seq,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
-      create_user_id = #{createUserId,jdbcType=INTEGER},
       update_user_id = #{updateUserId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -161,4 +159,19 @@
        and id != #{id}
      </if>
   </select>
+
+  <select id="getChildDepartmentByLevel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_department
+    where level like #{levelPrefix} || '.%'
+  </select>
+
+  <update id="batchUpdateLevel">
+    <foreach collection="list" item="dept" separator=";">
+      UPDATE sys_dept
+      SET level = #{dept.level}
+      WHERE id = #{dept.id}
+    </foreach>
+  </update>
 </mapper>

@@ -23,8 +23,13 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    @PostMapping
+    @PostMapping("addDepartment")
     public ResultStatus addDepartment(@RequestBody @Validated DepartmentRequest request){
         return departmentService.addDepartment(request);
+    }
+
+    @PostMapping("editDepartment")
+    public ResultStatus editDepartment(@RequestBody @Validated DepartmentRequest request){
+        return departmentService.editDepartment(request);
     }
 }

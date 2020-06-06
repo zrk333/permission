@@ -8,10 +8,14 @@ import com.zrk.request.DepartmentRequest;
 import com.zrk.service.DepartmentService;
 import com.zrk.util.LevelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -27,7 +31,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public ResultStatus addDepartment(DepartmentRequest request) {
-        if(checkExist(request.getParentId(),request.getName(),request.getId())){
+        if(checkExist(request.getParentId(),request.getName(),null)){
             throw new InvalidParamException("该层级下已存在该部门名称");
         }
         Department department = buildDO4Add(request);
@@ -39,6 +43,47 @@ public class DepartmentServiceImpl implements DepartmentService {
         return new ResultStatus();
     }
 
+    @Override
+    public ResultStatus editDepartment(DepartmentRequest request) {
+        if(checkExist(request.getParentId(),request.getName(),request.getId())){
+            throw new InvalidParamException("该层级下已存在该部门名称");
+        }
+        Department departmentOld = departmentMapper.selectByPrimaryKey(request.getId());
+        if(departmentOld == null){
+            throw new InvalidParamException("未获取到待更新部门");
+        }
+        Department departmentNew = buildDO4Update(request);
+        departmentNew.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
+        updateWithChild(departmentOld,departmentNew);
+        return new ResultStatus();
+    }
+
+    /**
+     * 事务待测
+     * @param departmentOld
+     * @param departmentNew
+     */
+    @Transactional(rollbackFor = Exception.class)
+    private void updateWithChild(Department departmentOld, Department departmentNew) {
+        String levelPrefixOld = departmentOld.getLevel();
+        String levelPrefixNew = departmentNew.getLevel();
+        if(!levelPrefixOld.equals(levelPrefixNew)){
+            List<Department> departmentList = departmentMapper.getChildDepartmentByLevel(levelPrefixOld);
+            if(!CollectionUtils.isEmpty(departmentList)){
+                departmentList.forEach(d -> changeLevel(d,levelPrefixOld,levelPrefixNew));
+                departmentMapper.batchUpdateLevel(departmentList);
+            }
+        }
+        departmentMapper.updateByPrimaryKey(departmentNew);
+    }
+
+    private void changeLevel(Department department, String levelPrefixOld, String levelPrefixNew) {
+        String level = department.getLevel();
+        if(StringUtils.isNotEmpty(level) && level.indexOf(levelPrefixOld) == 0){
+            department.setLevel(levelPrefixNew + level.substring(levelPrefixOld.length()));
+        }
+    }
+
     /**
      * 获取level
      * @param id
@@ -47,6 +92,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     private String getLevel(Long id) {
         Department department = departmentMapper.selectByPrimaryKey(id);
         return department == null ? null : department.getLevel();
+    }
+
+
+    private Department buildDO4Update(DepartmentRequest request) {
+        return Department.builder()
+                .id(request.getId())
+                .name(request.getName())
+                .parentId(request.getParentId())
+                .seq(request.getSeq())
+                .remark(request.getRemark())
+                .updateTime(new Date())
+                .build();
     }
 
     private Department buildDO4Add(DepartmentRequest request) {

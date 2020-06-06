@@ -16,4 +16,11 @@ public interface DepartmentService {
      * @return
      */
     ResultStatus addDepartment(DepartmentRequest request);
+
+    /**
+     * 编辑部门
+     * @param request
+     * @return
+     */
+    ResultStatus editDepartment(DepartmentRequest request);
 }
