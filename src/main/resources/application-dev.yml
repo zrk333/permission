@@ -2,7 +2,7 @@
 spring:
     #数据源相关配置
     datasource:
-        driverClassName: com.mysql.cj.jdbc.Driver
+        driverClassName: com.mysql.jdbc.Driver
         permission:
             url: jdbc:mysql://127.0.0.1:3306/permission?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=UTC
         password: root
@@ -14,3 +14,8 @@ mybatis:
 logging:
   level:
     com.zrk.dao: debug
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

@@ -150,4 +150,15 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findDepartmentByNameAndParentId" resultType="java.lang.Integer">
+    select
+    count(1)
+    from sys_department
+    where parent_id = #{parentId}
+    and name = #{name}
+     <if test="id != null and id != 0">
+       and id != #{id}
+     </if>
+  </select>
 </mapper>
