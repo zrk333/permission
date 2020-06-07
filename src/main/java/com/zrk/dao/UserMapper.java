@@ -3,6 +3,8 @@ package com.zrk.dao;
 import com.zrk.model.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(@Param("id") Long id);
 
@@ -31,4 +33,20 @@ public interface UserMapper {
      * @return
      */
     Integer findUserByEmail(@Param("email") String email, @Param("userId") Long userId);
+
+    /**
+     * 获取指定部门下用户数量
+     * @param deptId
+     * @return
+     */
+    Integer findUserByDeptId(@Param("deptId") Long deptId);
+
+    /**
+     * 获取指定部门下用户列表
+     * @param deptId
+     * @param from
+     * @param size
+     * @return
+     */
+    List<User> getUserListByDeptId(@Param("deptId") Long deptId, @Param("from") Integer from, @Param("size") Integer size);
 }

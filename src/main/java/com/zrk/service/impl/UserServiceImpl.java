@@ -4,6 +4,7 @@ import com.zrk.dao.UserMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.User;
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.UserListRequest;
 import com.zrk.request.UserRequest;
 import com.zrk.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -65,6 +67,15 @@ public class UserServiceImpl implements UserService {
             return new ResultStatus();
         }
         return new ResultStatus(ResultStatus.GlobalStatus.ERROR,"删除用户失败");
+    }
+
+    @Override
+    public ResultStatus getUserListByDeptId(UserListRequest request) {
+        Integer count = userMapper.findUserByDeptId(request.getDeptId());
+        if(count > 0){
+            List<User> userList = userMapper.getUserListByDeptId(request.getDeptId(),request.getFrom(),request.getPageSize());
+        }
+        return null;
     }
 
 

@@ -194,4 +194,20 @@
       and id = #{userId}
     </if>
   </select>
+
+  <select id="findUserByDeptId" resultType="java.lang.Integer">
+    select
+    count(1)
+    from sys_user
+    where dept_id = #{deptId}
+  </select>
+
+  <select id="getUserListByDeptId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where dept_id = #{deptId}
+    order by user_name
+    limit #{from},#{size}
+  </select>
 </mapper>

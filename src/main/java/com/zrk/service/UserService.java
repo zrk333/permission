@@ -1,6 +1,7 @@
 package com.zrk.service;
 
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.UserListRequest;
 import com.zrk.request.UserRequest;
 
 /**
@@ -30,4 +31,11 @@ public interface UserService {
      * @return
      */
     ResultStatus deleteUser(Long id);
+
+    /**
+     * 获取指定部门用户列表
+     * @param request
+     * @return
+     */
+    ResultStatus getUserListByDeptId(UserListRequest request);
 }
