@@ -1,6 +1,7 @@
 package com.zrk.service;
 
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.UserRequest;
 
 /**
  * @Description:
@@ -10,9 +11,23 @@ import com.zrk.model.web.ResultStatus;
 public interface UserService {
 
     /**
-     * 根据用户id获取用户信息
-     * @param userId
+     * 添加用户
+     * @param request
      * @return
      */
-    ResultStatus getUserInfoById(Long userId);
+    ResultStatus addUser(UserRequest request);
+
+    /**
+     * 编辑用户
+     * @param request
+     * @return
+     */
+    ResultStatus editUser(UserRequest request);
+
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    ResultStatus deleteUser(Long id);
 }

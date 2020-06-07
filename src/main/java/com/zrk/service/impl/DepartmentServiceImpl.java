@@ -37,8 +37,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department department = buildDO4Add(request);
         department.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
         // TODO
-        department.setCreateUserId(0);
-        department.setUpdateUserId(0);
+        department.setCreateUserId(0L);
+        department.setUpdateUserId(0L);
         departmentMapper.insertSelective(department);
         return new ResultStatus();
     }
@@ -54,7 +54,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         Department departmentNew = buildDO4Update(request);
         // TODO
-        departmentNew.setUpdateUserId(0);
+        departmentNew.setUpdateUserId(0L);
         departmentNew.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
         updateWithChild(departmentOld,departmentNew);
         return new ResultStatus();

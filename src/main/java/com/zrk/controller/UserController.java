@@ -1,11 +1,10 @@
 package com.zrk.controller;
 
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.UserRequest;
 import com.zrk.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -21,8 +20,18 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @GetMapping("getUserById")
-    private ResultStatus getUserById(@RequestParam("userId") Long userId){
-        return userService.getUserInfoById(userId);
+    @PostMapping("addUser")
+    public ResultStatus addUser(@RequestBody @Validated UserRequest request){
+        return userService.addUser(request);
+    }
+
+    @PostMapping("editUser")
+    public ResultStatus editUser(@RequestBody @Validated UserRequest request){
+        return userService.editUser(request);
+    }
+
+    @GetMapping("deleteUser")
+    public ResultStatus deleteUser(@RequestParam("id") Long id){
+        return userService.deleteUser(id);
     }
 }

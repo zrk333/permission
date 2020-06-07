@@ -1,6 +1,9 @@
 package com.zrk.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -9,6 +12,9 @@ import java.util.Date;
  * @Author: zrk
  * @Date: 2020/6/5
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class User {
     private Integer id;
@@ -21,15 +27,15 @@ public class User {
 
     private String password;
 
-    private Integer deptId;
+    private Long deptId;
 
     private Integer status;
 
     private String remark;
 
-    private Integer createUserId;
+    private Long createUserId;
 
-    private Integer updateUserId;
+    private Long updateUserId;
 
     private Date createTime;
 

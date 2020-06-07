@@ -29,9 +29,9 @@ public class Department {
 
     private String remark;
 
-    private Integer createUserId;
+    private Long createUserId;
 
-    private Integer updateUserId;
+    private Long updateUserId;
 
     private Date createTime;
 
