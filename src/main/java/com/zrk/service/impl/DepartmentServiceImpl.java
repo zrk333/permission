@@ -53,6 +53,8 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new InvalidParamException("未获取到待更新部门");
         }
         Department departmentNew = buildDO4Update(request);
+        // TODO
+        departmentNew.setUpdateUserId(0);
         departmentNew.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
         updateWithChild(departmentOld,departmentNew);
         return new ResultStatus();

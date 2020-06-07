@@ -42,8 +42,14 @@ public interface DepartmentMapper {
 
     /**
      * 根据父id校验是否存在子部门
-     * @param id
+     * @param parentId
      * @return
      */
-    Integer findDepartmentByParentId(@Param("id") Long id);
+    Integer findDepartmentByParentId(@Param("parentId") Long parentId);
+
+    /**
+     * 获取所有部门
+     * @return
+     */
+    List<Department> getAllDepartment();
 }

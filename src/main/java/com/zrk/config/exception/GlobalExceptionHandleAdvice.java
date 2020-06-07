@@ -25,6 +25,8 @@ public class GlobalExceptionHandleAdvice{
             resultStatus.setMsg(e.getMessage());
         } else {
             resultStatus.setStatus(ResultStatus.GlobalStatus.ERROR.getValue());
+            resultStatus.setMsg(e.getMessage());
+            log.error(e.getMessage(),e);
         }
         return resultStatus;
     }

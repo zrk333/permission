@@ -27,7 +27,7 @@ public class DepartmentRequest {
     /**
      * 部门父id
      */
-    private Long parentId;
+    private Long parentId = 0L;
 
     /**
      * 序列号

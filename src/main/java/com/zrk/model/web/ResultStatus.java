@@ -30,9 +30,9 @@ public class ResultStatus implements Serializable{
         /**成功*/
         SUCCESS(0),
         /**参数错误*/
-        PARAM_INVALID(51),
+        PARAM_INVALID(4),
         /**服务器错误*/
-        ERROR(52),
+        ERROR(5),
         /**结果为空*/
         RESULT_EMPTY(3)
         ;
@@ -71,7 +71,7 @@ public class ResultStatus implements Serializable{
         {
             put(GlobalStatus.SUCCESS.getValue(),"成功");
             put(GlobalStatus.PARAM_INVALID.getValue(),"参数错误");
-            put(GlobalStatus.PARAM_INVALID.getValue(),"服务器错误");
+            put(GlobalStatus.ERROR.getValue(),"服务器错误");
             put(GlobalStatus.RESULT_EMPTY.getValue(),"未获取到相关数据");
         }
     };
