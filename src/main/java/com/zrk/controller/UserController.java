@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("getUserListByDeptId")
-    public ResultStatus getUserListByDeptId(@RequestBody @Validated UserListRequest request){
+    public ResultStatus getUserListByDeptId(UserListRequest request){
         return userService.getUserListByDeptId(request);
     }
 }

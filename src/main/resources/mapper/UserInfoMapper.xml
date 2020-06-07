@@ -180,8 +180,8 @@
     count(1)
     from sys_user
     where phone = #{phone}
-    <if test="userId ！= null">
-      and id = #{userId}
+    <if test="userId != null">
+      and id != #{userId}
     </if>
   </select>
 
@@ -190,8 +190,8 @@
     count(1)
     from sys_user
     where email = #{email}
-    <if test="userId ！= null">
-      and id = #{userId}
+    <if test="userId != null">
+      and id != #{userId}
     </if>
   </select>
 

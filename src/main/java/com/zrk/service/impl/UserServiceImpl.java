@@ -3,12 +3,14 @@ package com.zrk.service.impl;
 import com.zrk.dao.UserMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.User;
+import com.zrk.model.web.PageResult;
 import com.zrk.model.web.ResultStatus;
 import com.zrk.request.UserListRequest;
 import com.zrk.request.UserRequest;
 import com.zrk.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -74,8 +76,16 @@ public class UserServiceImpl implements UserService {
         Integer count = userMapper.findUserByDeptId(request.getDeptId());
         if(count > 0){
             List<User> userList = userMapper.getUserListByDeptId(request.getDeptId(),request.getFrom(),request.getPageSize());
+            if(!CollectionUtils.isEmpty(userList)){
+                PageResult<User> pageResult = new PageResult<>();
+                pageResult.setData(userList);
+                pageResult.setTotal(count);
+                ResultStatus resultStatus = new ResultStatus();
+                resultStatus.setData(pageResult);
+                return resultStatus;
+            }
         }
-        return null;
+        return new ResultStatus(ResultStatus.GlobalStatus.RESULT_EMPTY);
     }
 
 
