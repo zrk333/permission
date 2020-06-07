@@ -26,10 +26,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultStatus addUser(UserRequest request) {
-        if(checkPhoneExist(request.getPhone(),request.getUserId())){
+        if(checkPhoneExist(request.getPhone(),null)){
             throw new InvalidParamException("该手机号已被使用");
         }
-        if(checkEmailExist(request.getEmail(),request.getUserId())){
+        if(checkEmailExist(request.getEmail(),null)){
             throw new InvalidParamException("该邮箱已被使用");
         }
         // TODO 生成密码、密码加密、<密码加盐>
@@ -43,12 +43,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultStatus editUser(UserRequest request) {
-        return null;
+        if(checkPhoneExist(request.getPhone(),request.getUserId())){
+            throw new InvalidParamException("该手机号已被使用");
+        }
+        if(checkEmailExist(request.getEmail(),request.getUserId())){
+            throw new InvalidParamException("该邮箱已被使用");
+        }
+        User userOld = userMapper.selectByPrimaryKey(request.getUserId());
+        if(userOld == null){
+            throw new InvalidParamException("未获取到待更新用户");
+        }
+        User userNew = buildDO4Update(request);
+        userNew.setUpdateUserId(0L);
+        userMapper.updateByPrimaryKeySelective(userNew);
+        return new ResultStatus();
     }
 
     @Override
     public ResultStatus deleteUser(Long id) {
-        return null;
+        if(userMapper.deleteByPrimaryKey(id) > 0){
+            return new ResultStatus();
+        }
+        return new ResultStatus(ResultStatus.GlobalStatus.ERROR,"删除用户失败");
     }
 
 
@@ -70,6 +86,20 @@ public class UserServiceImpl implements UserService {
                 .status(request.getStatus())
                 .remark(request.getRemark())
                 .createTime(new Date())
+                .updateTime(new Date())
+                .build();
+    }
+
+
+    private User buildDO4Update(UserRequest request) {
+        return User.builder()
+                .id(request.getUserId())
+                .userName(request.getUserName())
+                .phone(request.getPhone())
+                .email(request.getEmail())
+                .deptId(request.getDeptId())
+                .status(request.getStatus())
+                .remark(request.getRemark())
                 .updateTime(new Date())
                 .build();
     }
