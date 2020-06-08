@@ -194,4 +194,10 @@
     from sys_perm_module
     where parent_id = #{parentId}
   </select>
+
+  <select id="getAllModule" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_perm_module
+  </select>
 </mapper>

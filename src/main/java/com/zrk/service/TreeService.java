@@ -14,4 +14,10 @@ public interface TreeService {
      * @return
      */
     ResultStatus getDepartmentTree();
+
+    /**
+     * 获取权限模块树
+     * @return
+     */
+    ResultStatus getPermissionModuleTree();
 }

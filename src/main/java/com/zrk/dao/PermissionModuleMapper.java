@@ -46,4 +46,10 @@ public interface PermissionModuleMapper {
      * @return
      */
     Integer findModuleByParentId(@Param("parentId") Long parentId);
+
+    /**
+     * 获取所有权限模块
+     * @return
+     */
+    List<PermissionModule> getAllModule();
 }

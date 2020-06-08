@@ -3,6 +3,7 @@ package com.zrk.controller;
 import com.zrk.model.web.ResultStatus;
 import com.zrk.request.PermissionModuleRequest;
 import com.zrk.service.PermissionModuleService;
+import com.zrk.service.TreeService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,9 @@ public class PermissionModuleController {
     @Resource
     private PermissionModuleService permissionModuleService;
 
+    @Resource
+    private TreeService treeService;
+
     @PostMapping("addModule")
     public ResultStatus addModule(@RequestBody @Validated PermissionModuleRequest request){
         return permissionModuleService.addModule(request);
@@ -33,5 +37,10 @@ public class PermissionModuleController {
     @GetMapping("deleteModule")
     public ResultStatus deleteModule(@RequestParam("id") Long id){
         return permissionModuleService.deleteModule(id);
+    }
+
+    @GetMapping("tree")
+    public ResultStatus tree(){
+        return treeService.getPermissionModuleTree();
     }
 }
