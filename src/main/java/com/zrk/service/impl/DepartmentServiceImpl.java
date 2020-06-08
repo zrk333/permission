@@ -109,7 +109,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         return department == null ? null : department.getLevel();
     }
 
-
     private Department buildDO4Update(DepartmentRequest request) {
         return Department.builder()
                 .id(request.getId())
@@ -133,7 +132,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     /**
-     * 校验统一层级下是否存在该部门
+     * 校验同一层级下是否存在该部门
      * @param parentId
      * @param name
      * @param id
