@@ -29,5 +29,5 @@ public interface PermissionModuleService {
      * @param id
      * @return
      */
-    ResultStatus deleteModule(Integer id);
+    ResultStatus deleteModule(Long id);
 }

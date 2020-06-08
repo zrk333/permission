@@ -2,6 +2,7 @@ package com.zrk.service.impl;
 
 import com.zrk.dao.PermissionModuleMapper;
 import com.zrk.exception.InvalidParamException;
+import com.zrk.model.Department;
 import com.zrk.model.PermissionModule;
 import com.zrk.model.web.ResultStatus;
 import com.zrk.request.PermissionModuleRequest;
@@ -86,8 +87,16 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
     }
 
     @Override
-    public ResultStatus deleteModule(Integer id) {
-        return null;
+    public ResultStatus deleteModule(Long id) {
+        PermissionModule permissionModule = permissionModuleMapper.selectByPrimaryKey(id);
+        if(permissionModule == null){
+            throw new InvalidParamException("该权限模块不存在");
+        }
+        if(permissionModuleMapper.findModuleByParentId(id) > 0){
+            throw new InvalidParamException("该权限模块存在子模块，无法删除");
+        }
+        permissionModuleMapper.deleteByPrimaryKey(id);
+        return new ResultStatus();
     }
 
     private String getLevel(Long parentId) {

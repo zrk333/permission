@@ -31,7 +31,7 @@ public class PermissionModuleController {
     }
 
     @GetMapping("deleteModule")
-    public ResultStatus deleteModule(@RequestParam("id") Integer id){
+    public ResultStatus deleteModule(@RequestParam("id") Long id){
         return permissionModuleService.deleteModule(id);
     }
 }

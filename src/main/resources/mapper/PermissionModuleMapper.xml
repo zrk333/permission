@@ -187,4 +187,11 @@
       WHERE id = #{module.id}
     </foreach>
   </update>
+
+  <select id="findModuleByParentId" resultType="java.lang.Integer" >
+    select
+    count(1)
+    from sys_perm_module
+    where parent_id = #{parentId}
+  </select>
 </mapper>

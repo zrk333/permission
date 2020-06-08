@@ -39,4 +39,11 @@ public interface PermissionModuleMapper {
      * @param permissionModuleList
      */
     void batchUpdateLevel(@Param("list") List<PermissionModule> permissionModuleList);
+
+    /**
+     * 根据父id校验是否存在子模块
+     * @param parentId
+     * @return
+     */
+    Integer findModuleByParentId(@Param("parentId") Long parentId);
 }
