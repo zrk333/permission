@@ -3,6 +3,8 @@ package com.zrk.dao;
 import com.zrk.model.PermissionModule;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface PermissionModuleMapper {
     int deleteByPrimaryKey(@Param("id") Long id);
 
@@ -23,5 +25,18 @@ public interface PermissionModuleMapper {
      * @param id
      * @return
      */
-    Integer findModuleByNameAndParentId(Long parentId, String name, Integer id);
+    Integer findModuleByNameAndParentId(@Param("parentId") Long parentId, @Param("name") String name, @Param("id") Long id);
+
+    /**
+     * 获取子层级权限模块
+     * @param levelPrefix
+     * @return
+     */
+    List<PermissionModule> getChildModuleByLevel(@Param("levelPrefix") String levelPrefix);
+
+    /**
+     * 批量更新层级
+     * @param permissionModuleList
+     */
+    void batchUpdateLevel(@Param("list") List<PermissionModule> permissionModuleList);
 }

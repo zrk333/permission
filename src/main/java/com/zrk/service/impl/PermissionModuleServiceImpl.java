@@ -8,10 +8,14 @@ import com.zrk.request.PermissionModuleRequest;
 import com.zrk.service.PermissionModuleService;
 import com.zrk.util.LevelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -41,7 +45,44 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
 
     @Override
     public ResultStatus editModule(PermissionModuleRequest request) {
-        return null;
+        if(checkExist(request.getParentId(),request.getName(),request.getId())){
+            throw new InvalidParamException("该层级下已存在该权限模块名称");
+        }
+        PermissionModule permissionModuleOld = permissionModuleMapper.selectByPrimaryKey(request.getId());
+        if(permissionModuleOld == null){
+            throw new InvalidParamException("未获取到待更新权限模块");
+        }
+        PermissionModule permissionModuleNew = buildDO4Update(request);
+        // TODO
+        permissionModuleNew.setUpdateUserId(0L);
+        permissionModuleNew.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
+        updateWithChild(permissionModuleOld,permissionModuleNew);
+        return new ResultStatus();
+    }
+
+    /**
+     * @param permissionModuleOld
+     * @param permissionModuleNew
+     */
+    @Transactional(rollbackFor = Exception.class)
+    private void updateWithChild(PermissionModule permissionModuleOld, PermissionModule permissionModuleNew) {
+        String levelPrefixOld = permissionModuleOld.getLevel();
+        String levelPrefixNew = permissionModuleNew.getLevel();
+        if(!levelPrefixOld.equals(levelPrefixNew)){
+            List<PermissionModule> permissionModuleList = permissionModuleMapper.getChildModuleByLevel(levelPrefixOld);
+            if(!CollectionUtils.isEmpty(permissionModuleList)){
+                permissionModuleList.forEach(p -> changeLevel(p,levelPrefixOld,levelPrefixNew));
+                permissionModuleMapper.batchUpdateLevel(permissionModuleList);
+            }
+        }
+        permissionModuleMapper.updateByPrimaryKey(permissionModuleNew);
+    }
+
+    private void changeLevel(PermissionModule permissionModule, String levelPrefixOld, String levelPrefixNew) {
+        String level = permissionModule.getLevel();
+        if(StringUtils.isNotEmpty(level) && level.indexOf(levelPrefixOld) == 0){
+            permissionModule.setLevel(levelPrefixNew + level.substring(levelPrefixOld.length()));
+        }
     }
 
     @Override
@@ -49,10 +90,20 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
         return null;
     }
 
-
     private String getLevel(Long parentId) {
         PermissionModule permissionModule = permissionModuleMapper.selectByPrimaryKey(parentId);
         return permissionModule == null ? null : permissionModule.getLevel();
+    }
+
+    private PermissionModule buildDO4Update(PermissionModuleRequest request) {
+        return PermissionModule.builder()
+                .id(request.getId())
+                .name(request.getName())
+                .parentId(request.getParentId())
+                .seq(request.getSeq())
+                .remark(request.getRemark())
+                .updateTime(new Date())
+                .build();
     }
 
     private PermissionModule buildDO4Add(PermissionModuleRequest request) {
@@ -73,7 +124,7 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
      * @param id
      * @return
      */
-    private Boolean checkExist(Long parentId, String name, Integer id) {
+    private Boolean checkExist(Long parentId, String name, Long id) {
         return permissionModuleMapper.findModuleByNameAndParentId(parentId,name,id) > 0;
     }
 }

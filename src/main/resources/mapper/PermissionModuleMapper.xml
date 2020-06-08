@@ -172,4 +172,19 @@
       and id != #{id}
     </if>
   </select>
+
+  <select id="getChildModuleByLevel" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_perm_module
+    where level like #{levelPrefix} || '.%'
+  </select>
+
+  <update id="batchUpdateLevel">
+    <foreach collection="list" item="module" separator=";">
+      UPDATE sys_perm_module
+      SET level = #{module.level}
+      WHERE id = #{module.id}
+    </foreach>
+  </update>
 </mapper>
