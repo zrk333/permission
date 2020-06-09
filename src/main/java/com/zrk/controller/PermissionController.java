@@ -1,6 +1,7 @@
 package com.zrk.controller;
 
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.PermissionListRequest;
 import com.zrk.request.PermissionRequest;
 import com.zrk.service.PermissionService;
 import org.springframework.validation.annotation.Validated;
@@ -33,5 +34,10 @@ public class PermissionController {
     @GetMapping("deletePermission")
     public ResultStatus deletePermission(@RequestParam("id") Long id){
         return permissionService.deletePermission(id);
+    }
+
+    @GetMapping("getPermissionListByModuleId")
+    public ResultStatus getPermissionListByModuleId(PermissionListRequest request){
+        return permissionService.getPermissionListByModuleId(request);
     }
 }

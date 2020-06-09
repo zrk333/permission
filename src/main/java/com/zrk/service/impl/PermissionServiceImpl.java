@@ -3,14 +3,18 @@ package com.zrk.service.impl;
 import com.zrk.dao.PermissionsMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.Permissions;
+import com.zrk.model.web.PageResult;
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.PermissionListRequest;
 import com.zrk.request.PermissionRequest;
 import com.zrk.service.PermissionService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -59,6 +63,23 @@ public class PermissionServiceImpl implements PermissionService {
         return new ResultStatus(ResultStatus.GlobalStatus.ERROR,"删除权限失败");
     }
 
+    @Override
+    public ResultStatus getPermissionListByModuleId(PermissionListRequest request) {
+        Integer count = permissionsMapper.findPermissionBYModuleId(request.getPermModuleId());
+        if(count > 0) {
+            List<Permissions> permissionsList = permissionsMapper.getPermissionListByModuleId(request.getPermModuleId(),request.getFrom(),request.getPageSize());
+            if(!CollectionUtils.isEmpty(permissionsList)){
+                PageResult<Permissions> pageResult = new PageResult<>();
+                pageResult.setData(permissionsList);
+                pageResult.setTotal(count);
+                ResultStatus resultStatus = new ResultStatus();
+                resultStatus.setData(pageResult);
+                return resultStatus;
+            }
+        }
+        return new ResultStatus(ResultStatus.GlobalStatus.RESULT_EMPTY);
+    }
+
     private Boolean checkExist( Integer permModuleId, String name, Long id) {
         return permissionsMapper.findPermissionByModuleAndName(permModuleId,name,id) > 0;
     }
@@ -72,6 +93,8 @@ public class PermissionServiceImpl implements PermissionService {
         return Permissions.builder()
                 .name(request.getName())
                 .permModuleId(request.getPermModuleId())
+                .type(request.getType())
+                .url(request.getUrl())
                 .seq(request.getSeq())
                 .status(request.getStatus())
                 .remark(request.getRemark())
@@ -85,6 +108,8 @@ public class PermissionServiceImpl implements PermissionService {
                 .id(request.getId())
                 .name(request.getName())
                 .permModuleId(request.getPermModuleId())
+                .type(request.getType())
+                .url(request.getUrl())
                 .seq(request.getSeq())
                 .status(request.getStatus())
                 .remark(request.getRemark())

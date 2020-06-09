@@ -3,6 +3,8 @@ package com.zrk.dao;
 import com.zrk.model.Permissions;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface PermissionsMapper {
     int deleteByPrimaryKey(@Param("id") Long id);
 
@@ -24,4 +26,20 @@ public interface PermissionsMapper {
      * @return
      */
     Integer findPermissionByModuleAndName(@Param("permModuleId") Integer permModuleId, @Param("name") String name, @Param("id") Long id);
+
+    /**
+     * 获取权限模块下权限数量
+     * @param permModuleId
+     * @return
+     */
+    Integer findPermissionBYModuleId(@Param("permModuleId") Long permModuleId);
+
+    /**
+     * 获取指定权限模块下权限列表
+     * @param permModuleId
+     * @param from
+     * @param size
+     * @return
+     */
+    List<Permissions> getPermissionListByModuleId(@Param("permModuleId") Long permModuleId, @Param("from") Integer from, @Param("size") Integer size);
 }

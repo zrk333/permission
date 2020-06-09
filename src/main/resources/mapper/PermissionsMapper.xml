@@ -196,4 +196,20 @@
       and id != #{id}
     </if>
   </select>
+
+  <select id="findPermissionBYModuleId" resultType="java.lang.Integer" >
+    select
+    count(1)
+    from sys_permissions
+    where perm_module_id = #{permModuleId}
+  </select>
+
+  <select id="getPermissionListByModuleId" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_permissions
+    where perm_module_id = #{permModuleId}
+    order by seq
+    limit #{from},#{size}
+  </select>
 </mapper>

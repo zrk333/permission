@@ -1,6 +1,7 @@
 package com.zrk.service;
 
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.PermissionListRequest;
 import com.zrk.request.PermissionRequest;
 
 /**
@@ -30,4 +31,11 @@ public interface PermissionService {
      * @return
      */
     ResultStatus deletePermission(Long id);
+
+    /**
+     * 获取权限模块下权限列表
+     * @param request
+     * @return
+     */
+    ResultStatus getPermissionListByModuleId(PermissionListRequest request);
 }

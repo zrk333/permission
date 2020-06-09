@@ -51,7 +51,10 @@ public class PermissionRequest {
     @Max(value = 2, message = "用户状态有误")
     private Integer status;
 
-    @Null(message = "参数错误：权限序列不能为空")
+    /**
+     * 权限序列
+     */
+    @NotNull(message = "参数错误：权限序列不能为空")
     private Integer seq;
 
     /**
