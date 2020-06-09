@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidParamException("未获取到待更新用户");
         }
         User userNew = buildDO4Update(request);
-        userNew.setUpdateUserId(0L);
+        userNew.setUpdateUserId(1L);
         userMapper.updateByPrimaryKeySelective(userNew);
         return new ResultStatus();
     }

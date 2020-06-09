@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class Permissions {
-    private Integer id;
+    private Long id;
 
     private String code;
 

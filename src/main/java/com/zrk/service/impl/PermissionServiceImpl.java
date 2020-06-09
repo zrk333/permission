@@ -38,7 +38,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public ResultStatus editPermission(PermissionRequest request) {
-        return null;
+        if(checkExist(request.getPermModuleId(), request.getName(),request.getId())){
+            throw new InvalidParamException("该权限模块下该权限名称已被使用");
+        }
+        Permissions permissionsOld = permissionsMapper.selectByPrimaryKey(request.getId());
+        if(permissionsOld == null){
+            throw new InvalidParamException("未获取到待更新权限");
+        }
+        Permissions permissionsNew = buildDO4Update(request);
+        permissionsNew.setUpdateUserId(1L);
+        permissionsMapper.updateByPrimaryKeySelective(permissionsNew);
+        return new ResultStatus();
     }
 
     @Override
@@ -57,6 +67,19 @@ public class PermissionServiceImpl implements PermissionService {
 
     private Permissions buildDO4Add(PermissionRequest request) {
         return Permissions.builder()
+                .name(request.getName())
+                .permModuleId(request.getPermModuleId())
+                .seq(request.getSeq())
+                .status(request.getStatus())
+                .remark(request.getRemark())
+                .createTime(new Date())
+                .updateTime(new Date())
+                .build();
+    }
+
+    private Permissions buildDO4Update(PermissionRequest request) {
+        return Permissions.builder()
+                .id(request.getId())
                 .name(request.getName())
                 .permModuleId(request.getPermModuleId())
                 .seq(request.getSeq())
