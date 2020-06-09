@@ -53,7 +53,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public ResultStatus deleteRole(Long id) {
-        return null;
+        if(roleMapper.deleteByPrimaryKey(id) > 0){
+            return new ResultStatus();
+        }
+        return new ResultStatus(ResultStatus.GlobalStatus.ERROR,"删除角色失败");
     }
 
     private Boolean checkExist(String name, Long id) {
