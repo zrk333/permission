@@ -155,9 +155,7 @@
       seq = #{seq,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
-      create_user_id = #{createUserId,jdbcType=INTEGER},
       update_user_id = #{updateUserId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

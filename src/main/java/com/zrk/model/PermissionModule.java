@@ -27,7 +27,7 @@ public class PermissionModule {
 
     private Integer seq;
 
-    private Integer status;
+    private Integer status = 1;
 
     private String remark;
 

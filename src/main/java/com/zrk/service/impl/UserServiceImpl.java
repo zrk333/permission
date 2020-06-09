@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
         // TODO 生成密码、密码加密、<密码加盐>
         String password = "123456";
         User user = buildDO4Add(request,password);
-        user.setCreateUserId(0L);
-        user.setUpdateUserId(0L);
+        user.setCreateUserId(1L);
+        user.setUpdateUserId(1L);
         userMapper.insertSelective(user);
         return new ResultStatus();
     }

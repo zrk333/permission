@@ -20,13 +20,13 @@
     id, code, name, perm_module_id, url, type, status, seq, remark, create_user_id, update_user_id, 
     create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from sys_permissions
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from sys_permissions
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -185,4 +185,15 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findPermissionByModuleAndName" resultType="java.lang.Integer" >
+    select
+    count(1)
+    from sys_permissions
+    where perm_module_id = #{permModuleId}
+    and name = #{name}
+    <if test="id != null and id != 0">
+      and id != #{id}
+    </if>
+  </select>
 </mapper>

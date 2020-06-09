@@ -2,7 +2,6 @@ package com.zrk.service.impl;
 
 import com.zrk.dao.PermissionModuleMapper;
 import com.zrk.exception.InvalidParamException;
-import com.zrk.model.Department;
 import com.zrk.model.PermissionModule;
 import com.zrk.model.web.ResultStatus;
 import com.zrk.request.PermissionModuleRequest;
@@ -110,6 +109,7 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
                 .name(request.getName())
                 .parentId(request.getParentId())
                 .seq(request.getSeq())
+                .status(request.getStatus())
                 .remark(request.getRemark())
                 .updateTime(new Date())
                 .build();
@@ -120,6 +120,7 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
                 .name(request.getName())
                 .parentId(request.getParentId())
                 .seq(request.getSeq())
+                .status(request.getStatus())
                 .remark(request.getRemark())
                 .createTime(new Date())
                 .updateTime(new Date())
