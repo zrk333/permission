@@ -8,9 +8,11 @@ import com.zrk.request.RoleRequest;
 import com.zrk.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -57,6 +59,17 @@ public class RoleServiceImpl implements RoleService {
             return new ResultStatus();
         }
         return new ResultStatus(ResultStatus.GlobalStatus.ERROR,"删除角色失败");
+    }
+
+    @Override
+    public ResultStatus getRoleList() {
+        List<Role> roleList = roleMapper.getRoleList();
+        if(!CollectionUtils.isEmpty(roleList)){
+            ResultStatus resultStatus = new ResultStatus();
+            resultStatus.setData(roleList);
+            return resultStatus;
+        }
+        return new ResultStatus(ResultStatus.GlobalStatus.RESULT_EMPTY);
     }
 
     private Boolean checkExist(String name, Long id) {

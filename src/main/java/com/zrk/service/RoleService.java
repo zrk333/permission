@@ -30,4 +30,10 @@ public interface RoleService {
      * @return
      */
     ResultStatus deleteRole(Long id);
+
+    /**
+     * 获取角色列表
+     * @return
+     */
+    ResultStatus getRoleList();
 }

@@ -148,4 +148,10 @@
       and id = #{id}
     </if>
   </select>
+
+  <select id="getRoleList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+  </select>
 </mapper>

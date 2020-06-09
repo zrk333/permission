@@ -3,6 +3,8 @@ package com.zrk.dao;
 import com.zrk.model.Role;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface RoleMapper {
     int deleteByPrimaryKey(@Param("id") Long id);
 
@@ -23,4 +25,10 @@ public interface RoleMapper {
      * @return
      */
     Integer findRoleByName(@Param("name") String name, @Param("id") Long id);
+
+    /**
+     * 获取所有角色
+     * @return
+     */
+    List<Role> getRoleList();
 }
