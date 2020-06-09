@@ -26,7 +26,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public ResultStatus addRole(RoleRequest request) {
-        if(checkExist(request.getName(),request.getId())){
+        if(checkExist(request.getName(),null)){
             throw new InvalidParamException("该角色名称已被使用");
         }
         Role role = buildDO4Add(request);
@@ -38,7 +38,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public ResultStatus editRole(RoleRequest request) {
-        return null;
+        if(checkExist(request.getName(),request.getId())){
+            throw new InvalidParamException("该角色名称已被使用");
+        }
+        Role roleOld = roleMapper.selectByPrimaryKey(request.getId());
+        if(roleOld == null){
+            throw new InvalidParamException("未获取到待更新角色");
+        }
+        Role roleNew = buildDO4Update(request);
+        roleNew.setUpdateUserId(1L);
+        roleMapper.updateByPrimaryKeySelective(roleNew);
+        return new ResultStatus();
     }
 
     @Override
@@ -52,6 +62,18 @@ public class RoleServiceImpl implements RoleService {
 
     private Role buildDO4Add(RoleRequest request) {
         return Role.builder()
+                .name(request.getName())
+                .type(request.getType())
+                .status(request.getStatus())
+                .remark(request.getRemark())
+                .createTime(new Date())
+                .updateTime(new Date())
+                .build();
+    }
+
+    private Role buildDO4Update(RoleRequest request) {
+        return Role.builder()
+                .id(request.getId())
                 .name(request.getName())
                 .type(request.getType())
                 .status(request.getStatus())
