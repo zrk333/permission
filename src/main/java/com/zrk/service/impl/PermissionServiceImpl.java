@@ -53,7 +53,10 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public ResultStatus deletePermission(Long id) {
-        return null;
+        if(permissionsMapper.deleteByPrimaryKey(id) > 0){
+            return new ResultStatus();
+        }
+        return new ResultStatus(ResultStatus.GlobalStatus.ERROR,"删除权限失败");
     }
 
     private Boolean checkExist( Integer permModuleId, String name, Long id) {
