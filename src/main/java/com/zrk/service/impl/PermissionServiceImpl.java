@@ -66,7 +66,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public ResultStatus getPermissionListByModuleId(PermissionListRequest request) {
-        Integer count = permissionsMapper.findPermissionBYModuleId(request.getPermModuleId());
+        Integer count = permissionsMapper.findPermissionByModuleId(request.getPermModuleId());
         if(count > 0) {
             List<Permissions> permissionsList = permissionsMapper.getPermissionListByModuleId(request.getPermModuleId(),request.getFrom(),request.getPageSize());
             if(!CollectionUtils.isEmpty(permissionsList)){

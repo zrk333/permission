@@ -11,15 +11,15 @@ import java.util.Date;
  */
 @Data
 public class RolePermission {
-    private Integer id;
+    private Long id;
 
-    private Integer roleId;
+    private Long roleId;
 
-    private Integer permId;
+    private Long permId;
 
-    private Integer createUserId;
+    private Long createUserId;
 
-    private Integer updateUserId;
+    private Long updateUserId;
 
     private Date createTime;
 

@@ -7,6 +7,8 @@ import com.zrk.dao.PermissionModuleMapper;
 import com.zrk.dao.PermissionsMapper;
 import com.zrk.dto.DepartmentDTO;
 import com.zrk.dto.PermissionModuleDTO;
+import com.zrk.dto.PermissionsDTO;
+import com.zrk.exception.ResultEmptyException;
 import com.zrk.model.Department;
 import com.zrk.model.PermissionModule;
 import com.zrk.model.Permissions;
@@ -20,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -55,8 +54,51 @@ public class TreeServiceImpl implements TreeService {
         List<Permissions> rolePermissionList = coreService.getRolePermissionList(roleId);
         //获取当前系统所有的权限
         List<Permissions> allPermissionList = permissionsMapper.getAllPermissions();
+        if(CollectionUtils.isEmpty(allPermissionList)){
+            throw new ResultEmptyException();
+        }
+        Set<Long> userPermIdSet = userPermissionList.stream().map(Permissions::getId).collect(Collectors.toSet());
+        Set<Long> rolePermIdSet = rolePermissionList.stream().map(Permissions::getId).collect(Collectors.toSet());
+        List<PermissionsDTO> allPermissionsDTOList = new ArrayList<>();
+        allPermissionList.forEach(p -> {
+            PermissionsDTO permissionsDTO = convertPermissionsDOToDTO(p);
+            if(userPermIdSet.contains(p.getId())){
+                permissionsDTO.setHasPerm(true);
+            }
+            if(rolePermIdSet.contains(p.getId())){
+                permissionsDTO.setChecked(true);
+            }
+            allPermissionsDTOList.add(permissionsDTO);
+        });
+        List<PermissionModuleDTO> permissionModuleDTOList = transformRolePermissionTree(allPermissionsDTOList);
+        ResultStatus resultStatus = new ResultStatus();
+        resultStatus.setData(permissionModuleDTOList);
+        return resultStatus;
+    }
 
-        return null;
+    private List<PermissionModuleDTO> transformRolePermissionTree(List<PermissionsDTO> allPermissionsDTOList) {
+        if(CollectionUtils.isEmpty(allPermissionsDTOList)){
+            return new ArrayList<>();
+        }
+        List<PermissionModuleDTO> permissionModuleTree = getPermissionModuleTreeF();
+        Multimap<Long,PermissionsDTO> moduleId2PermissionMap = ArrayListMultimap.create();
+        allPermissionsDTOList.stream().filter(p -> p.getStatus() == 1).forEach(p -> moduleId2PermissionMap.put(p.getPermModuleId(),p));
+        bindPermToModule(permissionModuleTree,moduleId2PermissionMap);
+        return permissionModuleTree;
+    }
+
+    private void bindPermToModule(List<PermissionModuleDTO> permissionModuleDTOList, Multimap<Long, PermissionsDTO> moduleId2PermissionMap) {
+        if(CollectionUtils.isEmpty(permissionModuleDTOList)){
+            return;
+        }
+        for(PermissionModuleDTO permissionModule : permissionModuleDTOList){
+            List<PermissionsDTO> permissionsDTOList = (List<PermissionsDTO>) moduleId2PermissionMap.get(permissionModule.getId());
+            if(!CollectionUtils.isEmpty(permissionsDTOList)){
+                Collections.sort(permissionsDTOList,permissionsDTOComparable);
+                permissionModule.setPermissionList(permissionsDTOList);
+            }
+            bindPermToModule(permissionModule.getPermissionModuleList(),moduleId2PermissionMap);
+        }
     }
 
     @Override
@@ -115,16 +157,21 @@ public class TreeServiceImpl implements TreeService {
 
     @Override
     public ResultStatus getPermissionModuleTree() {
-        List<PermissionModule> permissionModuleList = permissionModuleMapper.getAllModule();
-        if(CollectionUtils.isEmpty(permissionModuleList)){
-            log.info("获取权限模块树为空");
-        }
-        List<PermissionModuleDTO> permissionModuleDTOList = new ArrayList<>();
-        permissionModuleList.forEach(p -> permissionModuleDTOList.add(convertPermissionModuleDOToDTO(p)));
-        List<PermissionModuleDTO> permissionModuleTree = makePermissionModuleTree(permissionModuleDTOList);
+        List<PermissionModuleDTO> permissionModuleTree = getPermissionModuleTreeF();
         ResultStatus resultStatus = new ResultStatus();
         resultStatus.setData(permissionModuleTree);
         return resultStatus;
+    }
+
+    private List<PermissionModuleDTO> getPermissionModuleTreeF() {
+        List<PermissionModule> permissionModuleList = permissionModuleMapper.getAllModule();
+        if(CollectionUtils.isEmpty(permissionModuleList)){
+            log.info("获取权限模块树为空");
+            return new ArrayList<>();
+        }
+        List<PermissionModuleDTO> permissionModuleDTOList = new ArrayList<>();
+        permissionModuleList.forEach(p -> permissionModuleDTOList.add(convertPermissionModuleDOToDTO(p)));
+        return makePermissionModuleTree(permissionModuleDTOList);
     }
 
     /**
@@ -167,6 +214,12 @@ public class TreeServiceImpl implements TreeService {
         }
     }
 
+    private PermissionsDTO convertPermissionsDOToDTO(Permissions permissions) {
+        PermissionsDTO permissionsDTO = new PermissionsDTO();
+        BeanUtils.copyProperties(permissions,permissionsDTO);
+        return permissionsDTO;
+    }
+
     private PermissionModuleDTO convertPermissionModuleDOToDTO(PermissionModule permissionModule) {
         PermissionModuleDTO permissionModuleDTO = new PermissionModuleDTO();
         BeanUtils.copyProperties(permissionModule,permissionModuleDTO);
@@ -189,6 +242,13 @@ public class TreeServiceImpl implements TreeService {
     Comparator<DepartmentDTO> departmentDTOComparator = new Comparator<DepartmentDTO>() {
         @Override
         public int compare(DepartmentDTO o1, DepartmentDTO o2) {
+            return o1.getSeq() - o2.getSeq();
+        }
+    };
+
+    Comparator<PermissionsDTO> permissionsDTOComparable = new Comparator<PermissionsDTO>() {
+        @Override
+        public int compare(PermissionsDTO o1, PermissionsDTO o2) {
             return o1.getSeq() - o2.getSeq();
         }
     };

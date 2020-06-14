@@ -32,7 +32,7 @@ public interface PermissionsMapper {
      * @param permModuleId
      * @return
      */
-    Integer findPermissionBYModuleId(@Param("permModuleId") Long permModuleId);
+    Integer findPermissionByModuleId(@Param("permModuleId") Long permModuleId);
 
     /**
      * 获取指定权限模块下权限列表
@@ -48,4 +48,11 @@ public interface PermissionsMapper {
      * @return
      */
     List<Permissions> getAllPermissions();
+
+    /**
+     * 根据ids获取权限
+     * @param ids
+     * @return
+     */
+    List<Permissions> getPermissionByIds(@Param("ids") List<Long> ids);
 }

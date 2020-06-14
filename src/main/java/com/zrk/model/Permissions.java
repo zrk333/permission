@@ -23,7 +23,7 @@ public class Permissions {
 
     private String name;
 
-    private Integer permModuleId;
+    private Long permModuleId;
 
     private String url;
 

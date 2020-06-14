@@ -197,7 +197,7 @@
     </if>
   </select>
 
-  <select id="findPermissionBYModuleId" resultType="java.lang.Integer" >
+  <select id="findPermissionByModuleId" resultType="java.lang.Integer" >
     select
     count(1)
     from sys_permissions
@@ -217,5 +217,15 @@
     select
     <include refid="Base_Column_List" />
     from sys_permissions
+  </select>
+
+  <select id="getPermissionByIds" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_permissions
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator="," >
+      #{id}
+    </foreach>
   </select>
 </mapper>

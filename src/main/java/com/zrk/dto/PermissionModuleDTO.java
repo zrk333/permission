@@ -17,4 +17,9 @@ public class PermissionModuleDTO extends PermissionModule {
      * 子层级
      */
     private List<PermissionModuleDTO> permissionModuleList;
+
+    /**
+     * 权限列表
+     */
+    private List<PermissionsDTO> permissionList;
 }
