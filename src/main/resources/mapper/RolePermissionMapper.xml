@@ -123,4 +123,17 @@
       #{id}
     </foreach>
   </select>
+
+  <delete id="deleteByRoleId" parameterType="java.lang.Long">
+    delete from sys_role_perm
+    where role_id = #{roleId}
+  </delete>
+
+ <insert id="batchInsert" >
+   insert into sys_role_perm (role_id, perm_id, create_user_id, update_user_id, create_time, update_time)
+   values
+   <foreach collection="list" item="rolePerm" separator="," >
+     (#{rolePerm.roleId}, #{rolePerm.permId}, #{rolePerm.createUserId}, #{rolePerm.updateUserId}, #{rolePerm.createTime}, #{rolePerm.updateTime})
+   </foreach>
+ </insert>
 </mapper>

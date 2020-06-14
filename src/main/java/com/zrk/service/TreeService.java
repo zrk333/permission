@@ -26,5 +26,5 @@ public interface TreeService {
      * @param roleId
      * @return
      */
-    ResultStatus getRoleTree(Long roleId);
+    ResultStatus getrolePermTree(Long roleId);
 }

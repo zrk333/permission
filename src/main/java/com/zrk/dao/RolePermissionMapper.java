@@ -24,4 +24,16 @@ public interface RolePermissionMapper {
      * @return
      */
     List<Long> getPermissionIdListByRoleIds(@Param("roleIdList") List<Long> userRoleIdList);
+
+    /**
+     * 根据角色id删除权限关系
+     * @param roleId
+     */
+    void deleteByRoleId(@Param("roleId") Long roleId);
+
+    /**
+     * 批量插入角色权限关系
+     * @param rolePermissionList
+     */
+    void batchInsert(@Param("list") List<RolePermission> rolePermissionList);
 }

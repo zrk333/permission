@@ -1,7 +1,9 @@
 package com.zrk.controller;
 
 import com.zrk.model.web.ResultStatus;
+import com.zrk.request.RolePermRequest;
 import com.zrk.request.RoleRequest;
+import com.zrk.service.RolePermissionService;
 import com.zrk.service.RoleService;
 import com.zrk.service.TreeService;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +26,9 @@ public class RoleController {
     @Resource
     private TreeService treeService;
 
+    @Resource
+    private RolePermissionService rolePermissionService;
+
     @PostMapping("addRole")
     public ResultStatus addRole(@RequestBody @Validated RoleRequest request){
         return roleService.addRole(request);
@@ -44,10 +49,13 @@ public class RoleController {
         return roleService.getRoleList();
     }
 
-    @GetMapping("tree")
-    public ResultStatus tree(@RequestParam("roleId") Long roleId){
-        return treeService.getRoleTree(roleId);
+    @GetMapping("rolePermTree")
+    public ResultStatus rolePermTree(@RequestParam("roleId") Long roleId){
+        return treeService.getrolePermTree(roleId);
     }
 
-
+    @PostMapping("updateRolePerms")
+    public ResultStatus updateRolePerms(@RequestBody RolePermRequest request){
+        return rolePermissionService.updateRolePerms(request);
+    }
 }

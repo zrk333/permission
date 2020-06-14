@@ -47,7 +47,7 @@ public class TreeServiceImpl implements TreeService {
     private CoreService coreService;
 
     @Override
-    public ResultStatus getRoleTree(Long roleId) {
+    public ResultStatus getrolePermTree(Long roleId) {
         //获取当前用户已分配的权限
         List<Permissions> userPermissionList = coreService.getCurrentUserPermissionList();
         //获取当前角色已分配的权限
