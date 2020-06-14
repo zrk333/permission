@@ -20,4 +20,11 @@ public interface TreeService {
      * @return
      */
     ResultStatus getPermissionModuleTree();
+
+    /**
+     * 获取角色权限树
+     * @param roleId
+     * @return
+     */
+    ResultStatus getRoleTree(Long roleId);
 }

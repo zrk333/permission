@@ -3,6 +3,7 @@ package com.zrk.controller;
 import com.zrk.model.web.ResultStatus;
 import com.zrk.request.RoleRequest;
 import com.zrk.service.RoleService;
+import com.zrk.service.TreeService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,9 @@ public class RoleController {
     
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private TreeService treeService;
 
     @PostMapping("addRole")
     public ResultStatus addRole(@RequestBody @Validated RoleRequest request){
@@ -39,5 +43,11 @@ public class RoleController {
     public ResultStatus getRoleList(){
         return roleService.getRoleList();
     }
+
+    @GetMapping("tree")
+    public ResultStatus tree(@RequestParam("roleId") Long roleId){
+        return treeService.getRoleTree(roleId);
+    }
+
 
 }

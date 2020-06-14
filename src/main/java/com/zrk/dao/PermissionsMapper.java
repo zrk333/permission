@@ -42,4 +42,10 @@ public interface PermissionsMapper {
      * @return
      */
     List<Permissions> getPermissionListByModuleId(@Param("permModuleId") Long permModuleId, @Param("from") Integer from, @Param("size") Integer size);
+
+    /**
+     * 获取所有权限的列表
+     * @return
+     */
+    List<Permissions> getAllPermissions();
 }

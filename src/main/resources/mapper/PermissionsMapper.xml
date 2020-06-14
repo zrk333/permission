@@ -212,4 +212,10 @@
     order by seq
     limit #{from},#{size}
   </select>
+
+  <select id="getAllPermissions" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_permissions
+  </select>
 </mapper>

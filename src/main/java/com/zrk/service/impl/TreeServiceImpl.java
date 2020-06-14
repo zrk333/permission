@@ -4,11 +4,14 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.zrk.dao.DepartmentMapper;
 import com.zrk.dao.PermissionModuleMapper;
+import com.zrk.dao.PermissionsMapper;
 import com.zrk.dto.DepartmentDTO;
 import com.zrk.dto.PermissionModuleDTO;
 import com.zrk.model.Department;
 import com.zrk.model.PermissionModule;
+import com.zrk.model.Permissions;
 import com.zrk.model.web.ResultStatus;
+import com.zrk.service.CoreService;
 import com.zrk.service.TreeService;
 import com.zrk.util.LevelUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,24 @@ public class TreeServiceImpl implements TreeService {
 
     @Resource
     private PermissionModuleMapper permissionModuleMapper;
+
+    @Resource
+    private PermissionsMapper permissionsMapper;
+
+    @Resource
+    private CoreService coreService;
+
+    @Override
+    public ResultStatus getRoleTree(Long roleId) {
+        //获取当前用户已分配的权限
+        List<Permissions> userPermissionList = coreService.getCurrentUserPermissionList();
+        //获取当前角色已分配的权限
+        List<Permissions> rolePermissionList = coreService.getRolePermissionList(roleId);
+        //获取当前系统所有的权限
+        List<Permissions> allPermissionList = permissionsMapper.getAllPermissions();
+
+        return null;
+    }
 
     @Override
     public ResultStatus getDepartmentTree() {
