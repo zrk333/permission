@@ -1,5 +1,6 @@
 package com.zrk.config.webmvc;
 
+import com.zrk.config.interceptor.LoginInterceptor;
 import com.zrk.config.interceptor.SystemInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,6 +21,10 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
         registry.addInterceptor(new SystemInterceptor())
                 .excludePathPatterns("/*.html", "/swagger-ui.html")
                 .addPathPatterns("/**");
+
+        registry.addInterceptor(new LoginInterceptor())
+                .excludePathPatterns("/*.html", "/swagger-ui.html")
+                .addPathPatterns("/core/**");
 
         super.addInterceptors(registry);
     }

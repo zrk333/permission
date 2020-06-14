@@ -1,5 +1,6 @@
 package com.zrk.service.impl;
 
+import com.zrk.config.webmvc.RequestHolder;
 import com.zrk.dao.RoleMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.Role;
@@ -32,8 +33,8 @@ public class RoleServiceImpl implements RoleService {
             throw new InvalidParamException("该角色名称已被使用");
         }
         Role role = buildDO4Add(request);
-        role.setCreateUserId(1L);
-        role.setUpdateUserId(1L);
+        role.setCreateUserId(RequestHolder.getCurrentUser().getId());
+        role.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         roleMapper.insertSelective(role);
         return new ResultStatus();
     }
@@ -48,7 +49,7 @@ public class RoleServiceImpl implements RoleService {
             throw new InvalidParamException("未获取到待更新角色");
         }
         Role roleNew = buildDO4Update(request);
-        roleNew.setUpdateUserId(1L);
+        roleNew.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         roleMapper.updateByPrimaryKeySelective(roleNew);
         return new ResultStatus();
     }

@@ -1,5 +1,6 @@
 package com.zrk.service.impl;
 
+import com.zrk.config.webmvc.RequestHolder;
 import com.zrk.dao.PermissionModuleMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.PermissionModule;
@@ -36,9 +37,8 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
         }
         PermissionModule permissionModule = buildDO4Add(request);
         permissionModule.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
-        // TODO
-        permissionModule.setCreateUserId(0L);
-        permissionModule.setUpdateUserId(0L);
+        permissionModule.setCreateUserId(RequestHolder.getCurrentUser().getId());
+        permissionModule.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         permissionModuleMapper.insertSelective(permissionModule);
         return new ResultStatus();
     }
@@ -53,8 +53,7 @@ public class PermissionModuleServiceImpl implements PermissionModuleService {
             throw new InvalidParamException("未获取到待更新权限模块");
         }
         PermissionModule permissionModuleNew = buildDO4Update(request);
-        // TODO
-        permissionModuleNew.setUpdateUserId(0L);
+        permissionModuleNew.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         permissionModuleNew.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
         updateWithChild(permissionModuleOld,permissionModuleNew);
         return new ResultStatus();

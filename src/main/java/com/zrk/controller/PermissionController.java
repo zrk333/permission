@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @Date: 2020/6/9
  */
 @RestController
-@RequestMapping("permission")
+@RequestMapping("core/permission")
 public class PermissionController {
 
     @Resource

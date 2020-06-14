@@ -1,5 +1,6 @@
 package com.zrk.service.impl;
 
+import com.zrk.config.webmvc.RequestHolder;
 import com.zrk.dao.UserMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.User;
@@ -39,8 +40,8 @@ public class UserServiceImpl implements UserService {
         // TODO 生成密码、密码加密、<密码加盐>
         String password = "123456";
         User user = buildDO4Add(request,password);
-        user.setCreateUserId(1L);
-        user.setUpdateUserId(1L);
+        user.setCreateUserId(RequestHolder.getCurrentUser().getId());
+        user.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         userMapper.insertSelective(user);
         return new ResultStatus();
     }
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidParamException("未获取到待更新用户");
         }
         User userNew = buildDO4Update(request);
-        userNew.setUpdateUserId(1L);
+        userNew.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         userMapper.updateByPrimaryKeySelective(userNew);
         return new ResultStatus();
     }

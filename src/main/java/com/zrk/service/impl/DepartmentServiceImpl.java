@@ -1,5 +1,6 @@
 package com.zrk.service.impl;
 
+import com.zrk.config.webmvc.RequestHolder;
 import com.zrk.dao.DepartmentMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.Department;
@@ -36,9 +37,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         Department department = buildDO4Add(request);
         department.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
-        // TODO
-        department.setCreateUserId(0L);
-        department.setUpdateUserId(0L);
+        department.setCreateUserId(RequestHolder.getCurrentUser().getId());
+        department.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         departmentMapper.insertSelective(department);
         return new ResultStatus();
     }
@@ -53,8 +53,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new InvalidParamException("未获取到待更新部门");
         }
         Department departmentNew = buildDO4Update(request);
-        // TODO
-        departmentNew.setUpdateUserId(0L);
+        departmentNew.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         departmentNew.setLevel(LevelUtil.calculateLevel(getLevel(request.getParentId()),request.getParentId()));
         updateWithChild(departmentOld,departmentNew);
         return new ResultStatus();

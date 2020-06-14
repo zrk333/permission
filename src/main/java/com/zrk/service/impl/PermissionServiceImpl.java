@@ -1,5 +1,6 @@
 package com.zrk.service.impl;
 
+import com.zrk.config.webmvc.RequestHolder;
 import com.zrk.dao.PermissionsMapper;
 import com.zrk.exception.InvalidParamException;
 import com.zrk.model.Permissions;
@@ -34,8 +35,8 @@ public class PermissionServiceImpl implements PermissionService {
         }
         Permissions permissions = buildDO4Add(request);
         permissions.setCode(generateCode());
-        permissions.setCreateUserId(1L);
-        permissions.setUpdateUserId(1L);
+        permissions.setCreateUserId(RequestHolder.getCurrentUser().getId());
+        permissions.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         permissionsMapper.insertSelective(permissions);
         return new ResultStatus();
     }
@@ -50,7 +51,7 @@ public class PermissionServiceImpl implements PermissionService {
             throw new InvalidParamException("未获取到待更新权限");
         }
         Permissions permissionsNew = buildDO4Update(request);
-        permissionsNew.setUpdateUserId(1L);
+        permissionsNew.setUpdateUserId(RequestHolder.getCurrentUser().getId());
         permissionsMapper.updateByPrimaryKeySelective(permissionsNew);
         return new ResultStatus();
     }
